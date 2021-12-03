@@ -6,7 +6,7 @@ router.get('/api/workouts', (req, res) => {
         {
             $addFields: {
                 totalDuration: {
-                    $sum: '$exercises.duration'
+                    $sum: '$exercise.duration'
                 }
             }
         }
@@ -20,15 +20,15 @@ router.get('/api/workouts', (req, res) => {
 });
 
 router.get('/api/workouts/range', (req, res) => {
-    Workout.git([
+    Workout.find(
         {
             $addFields: {
                 totalDuration: {
-                    $sum: '$exercises.duration'
+                    $sum: '$exercise.duration'
                 }
             }
         }
-    ])
+    )
     .sort({
         _id: -1
     })
@@ -37,6 +37,7 @@ router.get('/api/workouts/range', (req, res) => {
         res.json(dbWorkout)
     })
     .catch(err => {
+        console.log(err);
         res.status(400).json(err)
     });
 })
